@@ -4,9 +4,18 @@
     {
         public IEnumerable<Category> Categories { get; }
 
-        public Category GetCategoryById(int id)
+        public Category GetCategoryById(int categoryId)
         {
-            return Categories.FirstOrDefault(); //default
+            foreach (var category in Categories) 
+            {
+                if (category.CategoryId == categoryId)
+                {
+                    return category;
+                }
+                
+            }
+
+            return null;
         }
     }
 }
