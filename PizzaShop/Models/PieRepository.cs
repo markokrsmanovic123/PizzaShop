@@ -4,7 +4,11 @@ namespace PizzaShop.Models
 {
     public class PieRepository : IPieRepository
     {
-        public List<Pie> AllPies { get; set; }
+        public List<Pie> AllPies
+        { 
+            get {return myPies; } 
+        }
+
 
         public Pie GetPieById(int pieId)
         {

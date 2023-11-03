@@ -2,7 +2,7 @@
 {
     public interface IPieRepository
     {
-        List<Pie> AllPies { get; set; }
+        List<Pie> AllPies { get; }
 
         Pie GetPieById (int PieId);
     }
