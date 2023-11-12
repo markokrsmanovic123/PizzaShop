@@ -3,10 +3,33 @@
 <div>
     @foreach (var p in Model)
     {
-        <div>
+        <span>
             <h2>@p.Name</h2>
             <br>
             <h4>@p.Description</h4>
-        </div>
+            <br>
+        </span>
     }
 </div>
+
+<h2>Pregled svih Pita</h2>
+
+<table border="1">
+    <tr>
+        <th>Pie ID</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Price</th>
+        <th>Type</th>
+    </tr>
+    @foreach (var pie in Model)
+    {
+        <tr>
+            <td>@pie.PieId</td>
+            <td>@pie.Name</td>
+            <td>@pie.Description</td>
+            <td>@pie.Price</td>
+            <td>@pie.Category.CategoryName</td>
+        </tr>
+    }
+</table>
