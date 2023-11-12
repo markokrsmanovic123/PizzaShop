@@ -12,6 +12,12 @@
     }
 </div>
 
+<form action="@Url.Action("List")" method="get">
+    <label for="categoryId">Unesite ID kategorije:</label>
+    <input type="text" name="categoryID" />
+    <input type="submit" value="Filtriraj" />
+</form>
+
 <h2>Pregled svih Pita</h2>
 
 <table border="1">

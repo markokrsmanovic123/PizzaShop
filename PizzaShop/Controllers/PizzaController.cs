@@ -12,9 +12,19 @@ namespace PizzaShop.Controllers
         {
             _repository = repository;
         }
-        public ViewResult List()
+        public ViewResult List(int? categoryId)
         {
-            return View(_repository.AllPies);
+            var allPies = _repository.AllPies;
+
+            if (categoryId > 0) {
+                allPies = allPies.Where(pie => pie.Category.CategoryId == categoryId).ToList();
+
+                return View(allPies);
+            }
+            else
+            {
+                return View(_repository.AllPies);
+            }
         }
 
         public IActionResult Index()
