@@ -6,25 +6,34 @@ namespace PizzaShop.Controllers
 {
     public class PizzaController : Controller
     {
-        private IPieRepository _repository;
+        private IPizzaRepository _repository;
 
-        public PizzaController (IPieRepository repository)
+        public PizzaController (IPizzaRepository repository)
         {
             _repository = repository;
         }
         public ViewResult List(int? categoryId)
+        
         {
-            var allPies = _repository.AllPies;
+            var allPies = _repository.Pizzas;
 
-            if (categoryId > 0) {
-                allPies = allPies.Where(pie => pie.Category.CategoryId == categoryId).ToList();
+            if (categoryId > 0) 
+            {
+                allPies = allPies.Where(p => p.Category.Id == categoryId).ToList();
 
                 return View(allPies);
             }
             else
             {
-                return View(_repository.AllPies);
+                return View(_repository.Pizzas);
             }
+        }
+
+        public ViewResult Details(int id)
+        {
+            Pizza p = _repository.GetPizzaById(id);
+            
+            return View(p);
         }
 
         public IActionResult Index()

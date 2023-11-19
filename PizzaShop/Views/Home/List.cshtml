@@ -1,0 +1,13 @@
+﻿@model IEnumerable<Pizza>
+
+<div>
+    @foreach (var p in Model)
+    {
+        <span>
+            <h2>@p.Name</h2>
+            <br>
+            <h4>@p.Id</h4>
+            <br>
+        </span>
+    }
+</div>
