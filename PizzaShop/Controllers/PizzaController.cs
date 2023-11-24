@@ -25,7 +25,7 @@ namespace PizzaShop.Controllers
             }
             else
             {
-                return View(_repository.Pizzas);
+                return View(allPies);
             }
         }
 

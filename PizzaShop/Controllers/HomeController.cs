@@ -18,6 +18,11 @@ namespace PizzaShop.Controllers
             return View();
         }
 
+        public IActionResult Pretplata()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();
