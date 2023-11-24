@@ -1,21 +1,28 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PizzaShop.Models;
+using PizzaShop.ViewModels;
 using System.Diagnostics;
+
 
 namespace PizzaShop.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IPizzaRepository _pizzaRepository;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IPizzaRepository pizzaRepository)
         {
             _logger = logger;
+            _pizzaRepository = pizzaRepository;
+
         }
 
         public IActionResult Index() //test123
         {
-            return View();
+            var pizzasOfTheWeek = _pizzaRepository.Pizzas.Where(p => p.IsPizzaOfTheWeek == true).ToList();
+
+            return View(new HomeViewModel(pizzasOfTheWeek));
         }
 
         public IActionResult Pretplata()

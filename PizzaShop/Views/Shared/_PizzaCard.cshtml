@@ -1,0 +1,22 @@
+﻿@model Pizza
+
+<div class="col">
+    <div class="card pizza-card">
+        <img src="@Url.Content(Model.ImageThumbnailUrl)" class="card-img-top" alt="@Model.Name">
+        <div class="card-body pizza-button">
+            <h4 class="d-grid">
+            </h4>
+            <div class="d-flex justify-content-between mt-2">
+                <h2 class="text-start">
+                    <a asp-controller="Pizza"
+                       asp-action="Details"
+                       asp-route-id="@Model.Id"
+                       class="pizza-link">@Model.Name</a>
+                </h2>
+                <h5 class="text-nowrap">
+                    @Model.Price.ToString("c")
+                </h5>
+            </div>
+        </div>
+    </div>
+</div>

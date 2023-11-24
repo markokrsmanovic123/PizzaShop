@@ -1,72 +1,12 @@
-﻿@model IEnumerable<Pizza>
+﻿@using PizzaShop.ViewModels;
 
-<table class="table my-3">
-    <tr>
-        @{
-            int broj = Model.Count() % 3 == 0 ? Model.Count() / 3 : (Model.Count() / 3) + 1;
-        }
-        @for (int i = 0; i < broj; i++)
-        {
+@model PizzaListViewModel
 
-            for (int j = 0; j < 3 && (i * 3 + j) < Model.Count(); j++)
-            {
-            <td class="col-4">
-                <div class="card">
-                    <img class="card-img-top" src="@Url.Content(Model.ElementAt(i * 3 + j).ImageThumbnailUrl)" alt="@Model.ElementAt(i * 3 + j).Name">
-                    <div class="card-body">
-                        <h4 class="card-title">
-                            @Model.ElementAt(i * 3 + j).Name
-                        </h4>
-                        <p class="card-text">
-                            @Model.ElementAt(i * 3 + j).ShortDescription
-                        </p>
-                        <a href="Details/@Model.ElementAt(i * 3 + j).Id"><button type="button" class="btn btn-primary">Pogledaj detalje</button></a>
-                    </div>
-                </div>
-            </td>
-            }
-            
-            @:</tr><tr>
-        }
-    </tr>
-</table>
+<h1>@Model.CurrentCategory</h1>
 
-@* <div>
-    @foreach (var p in Model)
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    @foreach(var pizza in Model.Pizzas)
     {
-        <span>
-            <h2>@p.Name</h2>
-            <br>
-            <h4>@p.Description</h4>
-            <br>
-        </span>
+        <partial name="_PizzaCard" model="pizza"/>
     }
 </div>
-
-<form action="@Url.Action("List")" method="get">
-    <label for="categoryId">Unesite ID kategorije:</label>
-    <input type="text" name="categoryID" />
-    <input type="submit" value="Filtriraj" />
-</form>
-
-<h2>Pregled svih Pita</h2>
-
-<table border="1">
-    <tr>
-        <th>Pie ID</th>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Price</th>
-        <th>Type</th>
-    </tr>
-    @foreach (var pie in Model)
-    {
-        <tr>
-            <td>@pie.PieId</td>
-            <td>@pie.Name</td>
-            <td>@pie.Description</td>
-            <td>@pie.Price</td>
-            <td>@pie.Category.CategoryName</td>
-        </tr>
-    }
-</table> *@

@@ -1,32 +1,37 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PizzaShop.Models;
+using PizzaShop.ViewModels;
 using System.Runtime.CompilerServices;
 
 namespace PizzaShop.Controllers
 {
     public class PizzaController : Controller
     {
-        private IPizzaRepository _repository;
+        private readonly IPizzaRepository _repository;
+        private readonly ICategoryRepository _categoryRepository;
 
-        public PizzaController (IPizzaRepository repository)
+        public PizzaController (IPizzaRepository repository, ICategoryRepository categoryRepository)
         {
             _repository = repository;
+            _categoryRepository = categoryRepository;
         }
+
         public ViewResult List(int? categoryId)
-        
         {
-            var allPies = _repository.Pizzas;
+            IEnumerable<Pizza> pizzas;
+            string? category = "Sve Pice";
 
-            if (categoryId > 0) 
+            if (categoryId > 0)
             {
-                allPies = allPies.Where(p => p.Category.Id == categoryId).ToList();
+                pizzas = _repository.Pizzas.Where(p => p.Category.Id == categoryId).OrderBy(p => p.Id).ToList();
+                category = _categoryRepository.Categories.Where(c => c.Id == categoryId).Select(c => c.Name).FirstOrDefault();
+            }
+            else 
+            {
+                pizzas = _repository.Pizzas.OrderBy(p => p.Id);
+            }
 
-                return View(allPies);
-            }
-            else
-            {
-                return View(allPies);
-            }
+            return View(new PizzaListViewModel(pizzas, category));
         }
 
         public ViewResult Details(int id)
