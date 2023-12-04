@@ -4,6 +4,12 @@
     <div class="card pizza-card">
         <img class="card-img-top" src="@Url.Content(Model.ImageThumbnailUrl)" alt="@Model.Name">
         <div class="card-body">
+            <h4 class="d-grid">
+                <a class="btn btn-secondary"
+                   asp-controller="ShoppingCart"
+                   asp-action="AddToShoppingCart"
+                   asp-route-pizzaId="@Model.Id"> + Add to cart</a>
+            </h4>
             <h4 class="card-title">
                 @Model.Name
             </h4>
