@@ -20,7 +20,7 @@ namespace PizzaShop.Controllers
             var items = _shoppingCart.GetShoppingCartItems();
             _shoppingCart.ShoppingCartItems = items;
 
-            var shoppingCartViewModel = new ShoppingCartViewmodel(_shoppingCart, _shoppingCart.GetShoppingCartTotal());
+            var shoppingCartViewModel = new ShoppingCartViewModel(_shoppingCart, _shoppingCart.GetShoppingCartTotal());
 
             return View(shoppingCartViewModel);
         }
@@ -33,6 +33,7 @@ namespace PizzaShop.Controllers
             {
                 _shoppingCart.AddToCart(selectedPizza);
             }
+            
             return RedirectToAction("Index");
         }
 

@@ -69,10 +69,6 @@ namespace PizzaShop.Models
                     _context.ShoppingCartItems.Remove(shoppingCartItem);
                 }
             }
-            //else
-            //{
-            //    _context.ShoppingCartItems.Remove(shoppingCartItem);
-            //}
 
             _context.SaveChanges(true);
 
