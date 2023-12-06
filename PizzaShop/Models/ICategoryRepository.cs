@@ -2,7 +2,7 @@
 {
     public interface ICategoryRepository
     {
-        IEnumerable<Category> Categories { get; }
-        Category GetCategoryById(int id);
+        List<Category> GetAllCategories();
+        Category GetCategoryById(int? categoryId);
     }
 }
