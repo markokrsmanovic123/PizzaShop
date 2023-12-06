@@ -7,6 +7,10 @@
 
 
 <div class="row gx-3">
+    <div class="d-flex justify-content-end mb-3">
+        <a class="btn btn-danger" asp-controller="ShoppingCart" asp-action="ClearCart">Ukloni sve iz korpe</a>
+    </div>
+
     <div class="col-8">
         @foreach (var line in Model.ShoppingCart.ShoppingCartItems)
         {
@@ -23,6 +27,13 @@
                                 <h2>@line.Pizza.Price.ToString("c")</h2>
                             </div>
                         </div>
+                    <div class="d-flex justify-content-end col-md-3">
+                        <div class="input-group mb-3 ms-3">
+                            <a class="input-group-text text-decoration-none" asp-controller="ShoppingCart" asp-action="AddToShoppingCart" asp-route-pizzaId="@line.Pizza.Id">+</a>
+                            <input type="text" class="form-control text-center" value="@line.Amount">
+                            <a class="input-group-text text-decoration-none" asp-controller="ShoppingCart" asp-action="RemoveFromShoppingCart" asp-route-pizzaId="@line.Pizza.Id">-</a>
+                        </div>
+                    </div>
                     </div>
                 </div>
             </div>

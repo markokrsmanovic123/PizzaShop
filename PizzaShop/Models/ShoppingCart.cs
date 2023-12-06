@@ -64,11 +64,15 @@ namespace PizzaShop.Models
                     shoppingCartItem.Amount--;
                     localAmount = shoppingCartItem.Amount;
                 }
+                else
+                {
+                    _context.ShoppingCartItems.Remove(shoppingCartItem);
+                }
             }
-            else
-            {
-                _context.ShoppingCartItems.Remove(shoppingCartItem);
-            }
+            //else
+            //{
+            //    _context.ShoppingCartItems.Remove(shoppingCartItem);
+            //}
 
             _context.SaveChanges(true);
 
@@ -85,6 +89,15 @@ namespace PizzaShop.Models
             var total = _context.ShoppingCartItems.Where(c => c.ShoppingCartId == ShoppingCartId).Select(c => c.Pizza.Price * c.Amount).Sum();
 
             return total;
+        }
+
+        public void ClearCart()
+        {
+            var cartItems = _context.ShoppingCartItems.Where(c => c.ShoppingCartId == ShoppingCartId);
+
+            _context.ShoppingCartItems.RemoveRange(cartItems);
+
+            _context.SaveChanges();
         }
     }
 }
