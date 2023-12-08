@@ -15,7 +15,7 @@ namespace PizzaShop.Controllers
             _pizzaRepository = pizzaRepository;
         }
 
-        public IActionResult Index() 
+        public IActionResult Index()
         {
             var items = _shoppingCart.GetShoppingCartItems();
             _shoppingCart.ShoppingCartItems = items;
@@ -29,15 +29,15 @@ namespace PizzaShop.Controllers
         {
             var selectedPizza = _pizzaRepository.GetPizzaById(pizzaId);
 
-            if (selectedPizza != null) 
+            if (selectedPizza != null)
             {
                 _shoppingCart.AddToCart(selectedPizza);
             }
-            
+
             return RedirectToAction("Index");
         }
 
-        public RedirectToActionResult RemoveFromShoppingCart(int pizzaId) 
+        public RedirectToActionResult RemoveFromShoppingCart(int pizzaId)
         {
             var selectedPizza = _pizzaRepository.GetPizzaById(pizzaId);
 

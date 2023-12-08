@@ -1,7 +1,4 @@
-﻿using System.Security.Cryptography;
-using System.Xml.Linq;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace PizzaShop.Models
 {
@@ -18,11 +15,13 @@ namespace PizzaShop.Models
             return _applicationDbContext.Pizzas.Include(p => p.Category).FirstOrDefault(p => p.Id == id);
         }
 
-        public IEnumerable<Pizza> Pizzas { get 
+        public IEnumerable<Pizza> Pizzas
+        {
+            get
             {
                 return _applicationDbContext.Pizzas.Include(p => p.Category);
-            } 
-        } 
+            }
+        }
 
 
 

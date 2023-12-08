@@ -8,12 +8,12 @@ namespace PizzaShop.Components.ShoppingCartSummary
     {
         private readonly IShoppingCart _shoppingCart;
 
-        public ShoppingCartSummary(IShoppingCart shoppingCart) 
+        public ShoppingCartSummary(IShoppingCart shoppingCart)
         {
             _shoppingCart = shoppingCart;
         }
 
-        public IViewComponentResult Invoke() 
+        public IViewComponentResult Invoke()
         {
             var items = _shoppingCart.GetShoppingCartItems();
             _shoppingCart.ShoppingCartItems = items;

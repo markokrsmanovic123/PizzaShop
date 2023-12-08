@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PizzaShop.Models;
 using PizzaShop.ViewModels;
-using System.Runtime.CompilerServices;
 
 namespace PizzaShop.Controllers
 {
@@ -10,7 +9,7 @@ namespace PizzaShop.Controllers
         private readonly IPizzaRepository _repository;
         private readonly ICategoryRepository _categoryRepository;
 
-        public PizzaController (IPizzaRepository repository, ICategoryRepository categoryRepository)
+        public PizzaController(IPizzaRepository repository, ICategoryRepository categoryRepository)
         {
             _repository = repository;
             _categoryRepository = categoryRepository;
@@ -26,7 +25,7 @@ namespace PizzaShop.Controllers
                 pizzas = _repository.Pizzas.Where(p => p.Category.Id == categoryId).OrderBy(p => p.Id).ToList();
                 category = _categoryRepository.GetCategoryById(categoryId).Name;
             }
-            else 
+            else
             {
                 pizzas = _repository.Pizzas.OrderBy(p => p.Id);
             }
@@ -37,7 +36,7 @@ namespace PizzaShop.Controllers
         public ViewResult Details(int id)
         {
             Pizza p = _repository.GetPizzaById(id);
-            
+
             return View(p);
         }
 

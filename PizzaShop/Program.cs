@@ -1,5 +1,5 @@
-using PizzaShop.Models;
 using Microsoft.EntityFrameworkCore;
+using PizzaShop.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 

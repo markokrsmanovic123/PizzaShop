@@ -59,7 +59,7 @@ namespace PizzaShop.Models
 
             if (shoppingCartItem != null)
             {
-                if (shoppingCartItem.Amount > 1) 
+                if (shoppingCartItem.Amount > 1)
                 {
                     shoppingCartItem.Amount--;
                     localAmount = shoppingCartItem.Amount;
@@ -75,12 +75,12 @@ namespace PizzaShop.Models
             return localAmount;
         }
 
-        public List<ShoppingCartItem> GetShoppingCartItems() 
+        public List<ShoppingCartItem> GetShoppingCartItems()
         {
             return ShoppingCartItems ??= _context.ShoppingCartItems.Where(c => c.ShoppingCartId == ShoppingCartId).Include(s => s.Pizza).ToList();
         }
 
-        public decimal GetShoppingCartTotal() 
+        public decimal GetShoppingCartTotal()
         {
             var total = _context.ShoppingCartItems.Where(c => c.ShoppingCartId == ShoppingCartId).Select(c => c.Pizza.Price * c.Amount).Sum();
 
