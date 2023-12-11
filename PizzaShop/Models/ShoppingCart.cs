@@ -28,7 +28,7 @@ namespace PizzaShop.Models
             return new ShoppingCart(context) { ShoppingCartId = cartId };
         }
 
-        public void AddToCart(Pizza pizza, int amount)
+        public void AddToCart(Pizza pizza)
         {
             var shoppingCartItem = _context.ShoppingCartItems.SingleOrDefault(s => s.Pizza.Id == pizza.Id && s.ShoppingCartId == ShoppingCartId);
 
@@ -38,7 +38,7 @@ namespace PizzaShop.Models
                 {
                     ShoppingCartId = ShoppingCartId!,
                     Pizza = pizza,
-                    Amount = amount
+                    Amount = 1
                 };
 
                 _context.ShoppingCartItems.Add(shoppingCartItem);

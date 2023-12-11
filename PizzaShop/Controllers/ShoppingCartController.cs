@@ -25,13 +25,13 @@ namespace PizzaShop.Controllers
             return View(shoppingCartViewModel);
         }
 
-        public RedirectToActionResult AddToShoppingCart(int pizzaId, int amount)
+        public RedirectToActionResult AddToShoppingCart(int pizzaId)
         {
             var selectedPizza = _pizzaRepository.GetPizzaById(pizzaId);
 
             if (selectedPizza != null)
             {
-                _shoppingCart.AddToCart(selectedPizza, amount);
+                _shoppingCart.AddToCart(selectedPizza);
             }
 
             return RedirectToAction("Index");
