@@ -8,7 +8,7 @@ namespace PizzaShop.Controllers
         private readonly IShoppingCart _shoppingCart;
         private readonly IOrderRepository _orderRepository;
 
-        public OrderController(IShoppingCart shoppingCart, IOrderRepository orderRepository) 
+        public OrderController(IShoppingCart shoppingCart, IOrderRepository orderRepository)
         {
             _orderRepository = orderRepository;
             _shoppingCart = shoppingCart;
@@ -20,17 +20,17 @@ namespace PizzaShop.Controllers
         }
 
         [HttpPost]
-        public IActionResult Checkout(Order order) 
+        public IActionResult Checkout(Order order)
         {
             var items = _shoppingCart.GetShoppingCartItems();
             _shoppingCart.ShoppingCartItems = items;
 
-            if (_shoppingCart.ShoppingCartItems.Count == 0) 
+            if (_shoppingCart.ShoppingCartItems.Count == 0)
             {
                 ModelState.AddModelError("", "Vasa korpa je prazna!");
             }
 
-            if (ModelState.IsValid) 
+            if (ModelState.IsValid)
             {
                 _orderRepository.CreateOrder(order);
                 _shoppingCart.ClearCart();
@@ -41,7 +41,7 @@ namespace PizzaShop.Controllers
             return View(order);
         }
 
-        public IActionResult CheckoutComplete() 
+        public IActionResult CheckoutComplete()
         {
             ViewBag.Message = "Uspesna porudzbina!";
             return View();

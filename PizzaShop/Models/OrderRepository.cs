@@ -14,7 +14,7 @@
         public void CreateOrder(Order order)
         {
             order.OrderPlaced = DateTime.Now;
-            
+
             var shoppingCartItems = _shoppingCart.ShoppingCartItems;
 
             order.OrderTotal = _shoppingCart.GetShoppingCartTotal();
@@ -23,7 +23,7 @@
 
             foreach (var item in shoppingCartItems)
             {
-                var orderDetail = new OrderDetail 
+                var orderDetail = new OrderDetail
                 {
                     Amount = item.Amount,
                     PizzaId = item.Pizza.Id,
