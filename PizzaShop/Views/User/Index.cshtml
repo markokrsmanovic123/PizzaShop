@@ -1,14 +1,28 @@
-﻿@model Order
+﻿@model User
 
-<form asp-action="Checkout" asp-controller="Order" method="post" role="form">
-    <h3 class="my-5">
-        Samo ste na jedan korak od vasih ukusnih pica
+<div class="mt-5">
+    <div class="text-center mb-5">
+    <h3>
+        Registrujte se i postanite nas clan!
     </h3>
-
-@*     <div asp-validation-summary="All" class="text-danger"></div>
- *@
+    <p>
+        Unesite vase podatke u formu ispod i uzivajte u jos brzim porudzbinama.
+    </p>
+    </div>
+    <div>
+        <form asp-controller="User" asp-action="Register" class="d-flex justify-content-center" method="post" role="form">
     <div class="col-6">
         <div class="row g-2">
+            <div class="col-12">
+                <label asp-for="Username" class="form-label"></label>
+                <input asp-for="Username" class="form-control" />
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
+            <div class="col-12">
+                <label asp-for="Password" class="form-label"></label>
+                <input asp-for="Password" type="password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
             <div class="col-12">
                 <label asp-for="FirstName" class="form-label"></label>
                 <input asp-for="FirstName" class="form-control" />
@@ -25,6 +39,11 @@
                 <span asp-validation-for="Address" class="text-danger"></span>
             </div>
             <div class="col-12">
+                <label asp-for="City" class="form-label"></label>
+                <input asp-for="City" class="form-control" />
+                <span asp-validation-for="City" class="text-danger"></span>
+            </div>
+            <div class="col-12">
                 <label asp-for="Country" class="form-label"></label>
                 <input asp-for="Country" class="form-control" />
                 <span asp-validation-for="Country" class="text-danger"></span>
@@ -39,11 +58,14 @@
                 <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
-            <div class="mt-2">
-                <div class="col-md-offset-2 col-md-5">
-                    <input type="submit" class="btn btn-secondary" value="Poruci" />
+            <div class="mt-4">
+                <div class="col-md-offset-2 col-md-12 text-center">
+                    <input type="submit" class="btn btn-primary col-6 mb-2" value="Registruj se" />
+                    <input type="reset" class="btn btn-outline-danger col-6" value="Resetuj formu">
                 </div>
             </div>
         </div>
     </div>
 </form>
+    </div>
+</div>
