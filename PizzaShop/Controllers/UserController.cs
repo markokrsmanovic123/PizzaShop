@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PizzaShop.Models;
+using PizzaShop.ViewModels;
 
 namespace PizzaShop.Controllers
 {
@@ -17,17 +18,40 @@ namespace PizzaShop.Controllers
 
         public IActionResult Login()
         {
-            return View();
+            return View(new LoginViewModel());
         }
 
-        public IActionResult SignIn(User user)
+        public IActionResult SignIn(LoginViewModel user)
         {
-            return View(user);
+            if (!ModelState.IsValid)
+            {
+                return View("Login", user);
+            }
+
+            var isExist = _userRepository.IsExist(user.Username);
+
+            if (isExist) 
+            {
+                var isPasswordOk = _userRepository.IsPasswordOk(user.Password);
+
+                if (isPasswordOk)
+                {
+                    return RedirectToAction("SignInSuccess");
+                }
+            }
+
+            ModelState.AddModelError("", "Neispravni kredencijali");
+
+            return View("Login", user);
+        }
+
+        public IActionResult SignInSuccess()
+        {
+            return View();
         }
 
         public IActionResult Register(User user)
         {
-            
             if (ModelState.IsValid)
             {
                 var isExist = _userRepository.IsExist(user.Username);
@@ -35,7 +59,6 @@ namespace PizzaShop.Controllers
                 if (!isExist)
                 {
                     _userRepository.CreateUser(user);
-
                     return View("Sucess");
                 }
                 else

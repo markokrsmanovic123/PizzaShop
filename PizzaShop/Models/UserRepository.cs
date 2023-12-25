@@ -1,4 +1,6 @@
-﻿namespace PizzaShop.Models
+﻿using PizzaShop.Helpers;
+
+namespace PizzaShop.Models
 {
     public class UserRepository : IUserRepository
     {
@@ -10,6 +12,8 @@
         }
         public void CreateUser(User user)
         {
+            user.Password = EncryptionHelper.Encrypt(user.Password);
+
             _context.Users.Add(user);
             _context.SaveChanges();
         }
@@ -20,6 +24,18 @@
             {
                 return false;
             }
+            return true;
+        }
+
+        public bool IsPasswordOk(string password)
+        {
+            var inputPassword = EncryptionHelper.Encrypt(password);
+
+            if (_context.Users.FirstOrDefault(u => u.Password == inputPassword) == null)
+            {
+                return false;
+            }
+
             return true;
         }
     }

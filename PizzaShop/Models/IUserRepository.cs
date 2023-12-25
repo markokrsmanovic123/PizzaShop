@@ -4,5 +4,7 @@
     {
         void CreateUser(User user);
         bool IsExist(string username);
+
+        bool IsPasswordOk(string password);
     }
 }
