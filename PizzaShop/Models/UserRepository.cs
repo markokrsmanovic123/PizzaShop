@@ -18,25 +18,9 @@ namespace PizzaShop.Models
             _context.SaveChanges();
         }
 
-        public bool IsExist(string username)
+        public User GetUserByUsername(string username) 
         {
-            if(_context.Users.FirstOrDefault(u => u.Username == username) == null)
-            {
-                return false;
-            }
-            return true;
-        }
-
-        public bool IsPasswordOk(string password)
-        {
-            var inputPassword = EncryptionHelper.Encrypt(password);
-
-            if (_context.Users.FirstOrDefault(u => u.Password == inputPassword) == null)
-            {
-                return false;
-            }
-
-            return true;
+            return _context.Users.FirstOrDefault(u => u.Username == username)!;
         }
     }
 }

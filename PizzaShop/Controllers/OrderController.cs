@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using PizzaShop.Models;
+using System.Net;
 
 namespace PizzaShop.Controllers
 {
@@ -16,7 +18,22 @@ namespace PizzaShop.Controllers
 
         public IActionResult Checkout()
         {
-            return View();
+            var userCookie = Request.Cookies["User"];
+            var user = JsonConvert.DeserializeObject<User>(userCookie!);
+
+            var vm = new Order();
+
+            if (user != null) 
+            {
+                vm.Address = user.Address;
+                vm.PhoneNumber = user.PhoneNumber;
+                vm.FirstName = user.FirstName;
+                vm.LastName = user.LastName;
+                vm.Email = user.Email;
+                vm.Country = user.Country;
+            }
+
+            return View(vm);
         }
 
         [HttpPost]

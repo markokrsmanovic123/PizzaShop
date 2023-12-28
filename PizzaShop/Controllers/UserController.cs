@@ -1,6 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using PizzaShop.Helpers;
 using PizzaShop.Models;
 using PizzaShop.ViewModels;
+using System.Net.Http.Json;
+using System.Text.Json.Serialization;
 
 namespace PizzaShop.Controllers
 {
@@ -21,22 +25,28 @@ namespace PizzaShop.Controllers
             return View(new LoginViewModel());
         }
 
-        public IActionResult SignIn(LoginViewModel user)
+        public IActionResult SignIn(LoginViewModel loginUser)
         {
             if (!ModelState.IsValid)
             {
-                return View("Login", user);
+                return View("Login", loginUser);
             }
 
-            var isExist = _userRepository.IsExist(user.Username);
+            var user = _userRepository.GetUserByUsername(loginUser.Username);
 
-            if (isExist) 
+            if (user != null)
             {
-                var isPasswordOk = _userRepository.IsPasswordOk(user.Password);
+                var isPasswordOk = EncryptionHelper.Encrypt(loginUser.Password) == user.Password ? true : false;
 
                 if (isPasswordOk)
                 {
-                    return RedirectToAction("SignInSuccess");
+                    user.Password = "";
+                    var cookieOptions = new CookieOptions();
+                    cookieOptions.Expires = DateTime.Now.AddDays(1);
+                    var serializedUser = JsonConvert.SerializeObject(user);
+                    Response.Cookies.Append("User", serializedUser, cookieOptions);
+
+                    return RedirectToAction("Index", "Home");
                 }
             }
 
@@ -45,31 +55,26 @@ namespace PizzaShop.Controllers
             return View("Login", user);
         }
 
-        public IActionResult SignInSuccess()
-        {
-            return View();
-        }
-
-        public IActionResult Register(User user)
+        public IActionResult Register(User registerUser)
         {
             if (ModelState.IsValid)
             {
-                var isExist = _userRepository.IsExist(user.Username);
+                var user = _userRepository.GetUserByUsername(registerUser.Username);
 
-                if (!isExist)
+                if (user == null)
                 {
-                    _userRepository.CreateUser(user);
+                    _userRepository.CreateUser(registerUser);
                     return View("Sucess");
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Korisnicko ime " +  user.Username + " je zauzeto");
-                    return View("Index", user);
+                    ModelState.AddModelError("", "Korisnicko ime " + registerUser.Username + " je zauzeto");
+                    return View("Index", registerUser);
                 }
             }
             else
             {
-                return View("Index", user);
+                return View("Index", registerUser);
             }
         }
     }
