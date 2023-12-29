@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PizzaShop.Models
 {
@@ -14,8 +15,14 @@ namespace PizzaShop.Models
         [Required(ErrorMessage = "Sifra je neispravna")]
         [Display(Name = "Sifra")]
         [StringLength(20, ErrorMessage = "Sifra je predugacka (maksimalno 20 karaktera)")]
-
         public string Password { get; set; }
+
+        [NotMapped]
+        [Required]
+        [Display(Name = "Potvrdi sifru")]
+        [Compare("Password", ErrorMessage = "Uneta sifra se ne poklapa!")]
+        public string ConfirmPassword { get; set; }
+
         [Required(ErrorMessage = "Ime je neispravno")]
         [Display(Name = "Ime")]
         [StringLength(20, ErrorMessage = "Ime je predugacko (maksimalno 20 karaktera)")]
@@ -51,6 +58,7 @@ namespace PizzaShop.Models
         [StringLength(50, ErrorMessage = "Email adresa je predugacka (maksimalno 50 karaktera)")]
         [DataType(DataType.EmailAddress)]
         public string? Email { get; set; }
+        public List<Order> Orders { get; set; }
 
     }
 }

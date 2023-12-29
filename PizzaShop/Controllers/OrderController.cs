@@ -9,29 +9,36 @@ namespace PizzaShop.Controllers
     {
         private readonly IShoppingCart _shoppingCart;
         private readonly IOrderRepository _orderRepository;
+        private readonly IUserRepository _userRepository;
 
-        public OrderController(IShoppingCart shoppingCart, IOrderRepository orderRepository)
+
+        public OrderController(IShoppingCart shoppingCart, IOrderRepository orderRepository, IUserRepository userRepository)
         {
             _orderRepository = orderRepository;
             _shoppingCart = shoppingCart;
+            _userRepository = userRepository;
         }
 
         public IActionResult Checkout()
         {
             var userCookie = Request.Cookies["User"];
+
+            if (userCookie == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+
             var user = JsonConvert.DeserializeObject<User>(userCookie!);
 
             var vm = new Order();
 
-            if (user != null) 
-            {
-                vm.Address = user.Address;
-                vm.PhoneNumber = user.PhoneNumber;
-                vm.FirstName = user.FirstName;
-                vm.LastName = user.LastName;
-                vm.Email = user.Email;
-                vm.Country = user.Country;
-            }
+            vm.UserId = user.UserId;
+            vm.Address = user.Address;
+            vm.PhoneNumber = user.PhoneNumber;
+            vm.FirstName = user.FirstName;
+            vm.LastName = user.LastName;
+            vm.Email = user.Email;
+            vm.Country = user.Country;
 
             return View(vm);
         }

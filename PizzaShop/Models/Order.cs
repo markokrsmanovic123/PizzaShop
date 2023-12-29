@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PizzaShop.Models
 {
@@ -7,6 +8,11 @@ namespace PizzaShop.Models
     {
         [BindNever]
         public int Id { get; set; }
+
+        public int UserId { get; set; }
+
+        [ForeignKey("UserId")]
+        public User? User { get; set; }
 
         public List<OrderDetail>? OrderDetails { get; set; } = default!;
 
