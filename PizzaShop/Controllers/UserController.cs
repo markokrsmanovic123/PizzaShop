@@ -57,6 +57,8 @@ namespace PizzaShop.Controllers
 
         public IActionResult Register(User registerUser)
         {
+            ModelState.Remove("Orders");
+
             if (ModelState.IsValid)
             {
                 var user = _userRepository.GetUserByUsername(registerUser.Username);
@@ -112,7 +114,7 @@ namespace PizzaShop.Controllers
 
             if (model.Username != user.Username)
             {
-                ModelState.AddModelError("", "Korisnicko ime nije ispravno");
+                ModelState.AddModelError("", "Korisnicko ime nije ispravno!");
                 return View("Profile", model);
             }
 
@@ -126,6 +128,27 @@ namespace PizzaShop.Controllers
                 ModelState.AddModelError("", "Password nije ispravan");
                 return View("Profile", model);
             }
+        }
+
+        public IActionResult GetUsersOrders(User user)
+        {
+            var usersOrders = _userRepository.GetUsersWithPizzasByUserId(user.UserId);
+
+            return View(usersOrders);
+        }
+
+        public IActionResult OrderHistory(User user) 
+        {
+            var userCookie = HttpContext!.Request.Cookies["User"];
+
+            if (userCookie != null)
+            {
+                user = JsonConvert.DeserializeObject<User>(userCookie)!;
+            }
+
+            var usersOrders = _userRepository.GetUsersWithPizzasByUserId(user.UserId);
+
+            return View(usersOrders);
         }
     }
 }

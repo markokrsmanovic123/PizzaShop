@@ -7,7 +7,9 @@
 
 <h3 class="mt-5">Dobro dosao na svoj profil, @Model.Username</h3>
 
-<form asp-controller="User" asp-action="ChangePassword" method="post" role="form">
+<div class="row gx-3">
+    <div class="col-8">
+        <form asp-controller="User" asp-action="ChangePassword" method="post" role="form">
     <p class="my-5">
         Za promenu lozinke molimo Vas unesite vas korisnicko ime, staru sifru i novu sifru.
     </p>
@@ -45,3 +47,10 @@
         </div>
     </div>
 </form>
+    </div>
+    <div class="col-4">
+        <div class="text-center d-grid mt-4">
+            <a class="btn btn-secondary" asp-action="OrderHistory" asp-controller="User"><h4>Istorija porudzbina</h4></a>
+        </div>
+    </div>
+</div>

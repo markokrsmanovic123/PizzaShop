@@ -1,0 +1,37 @@
+﻿@using PizzaShop.Models
+@model User
+
+@{
+    <h3 class="mt-5">Lista vasih porudzbina:</h3>
+
+    <table class="table table-bordered mt-3">
+        <tr>
+            <th>Vreme porudzbine</th>
+            <th>Ime</th>
+            <th>Adresa</th>
+            <th>Pizza</th>
+            <th>Id porudzbine</th>
+            <th>Kolicina</th>
+            <th>Cena</th>
+            <th>Ukupna cena</th>
+        </tr>
+
+        @foreach (var order in Model.Orders)
+        {
+            foreach (var orderDetail in order.OrderDetails)
+            {
+                <tr>
+                    <td>@order.OrderPlaced</td>
+                    <td>@Model.FirstName @Model.LastName</td>
+                    <td>@order.Address, @order.Country</td>
+                    <td>@orderDetail.Pizza.Name</td>
+                    <td>@orderDetail.OrderId</td>
+                    <td>@orderDetail.Amount</td>
+                    <td>@orderDetail.Price</td>
+                    <td>@order.OrderTotal</td>
+                </tr>
+            }
+        }
+    </table>
+
+}
