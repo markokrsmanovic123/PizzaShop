@@ -55,28 +55,41 @@ namespace PizzaShop.Controllers
             return View("Login", user);
         }
 
-        public IActionResult Register(User registerUser)
-        {
-            ModelState.Remove("Orders");
+        public IActionResult Register(UserRegisterViewModel userRegisterViewModel)
+        {   
+            var user = _userRepository.GetUserByUsername(userRegisterViewModel.Username);
+
+            User userVM = new User()
+            {
+                UserId = userRegisterViewModel.UserId,
+                Username = userRegisterViewModel.Username,
+                Password = userRegisterViewModel.Password,
+                FirstName = userRegisterViewModel.FirstName,
+                LastName = userRegisterViewModel.LastName,
+                Address = userRegisterViewModel.Address,
+                City = userRegisterViewModel.City,
+                Country = userRegisterViewModel.Country,
+                PhoneNumber = userRegisterViewModel.PhoneNumber,
+                Email = userRegisterViewModel.Email,
+            };
+
 
             if (ModelState.IsValid)
             {
-                var user = _userRepository.GetUserByUsername(registerUser.Username);
-
                 if (user == null)
                 {
-                    _userRepository.CreateUser(registerUser);
+                    _userRepository.CreateUser(userVM);
                     return View("Sucess");
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Korisnicko ime " + registerUser.Username + " je zauzeto");
-                    return View("Index", registerUser);
+                    ModelState.AddModelError("", "Korisnicko ime " + userVM.Username + " je zauzeto");
+                    return View("Index", userVM);
                 }
             }
             else
             {
-                return View("Index", registerUser);
+                return View("Index", userVM);
             }
         }
         public IActionResult Logout()
@@ -128,13 +141,6 @@ namespace PizzaShop.Controllers
                 ModelState.AddModelError("", "Password nije ispravan");
                 return View("Profile", model);
             }
-        }
-
-        public IActionResult GetUsersOrders(User user)
-        {
-            var usersOrders = _userRepository.GetUsersWithPizzasByUserId(user.UserId);
-
-            return View(usersOrders);
         }
 
         public IActionResult OrderHistory(User user) 
