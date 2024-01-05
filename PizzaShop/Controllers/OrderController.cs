@@ -34,6 +34,7 @@ namespace PizzaShop.Controllers
 
             vm.UserId = user.UserId;
             vm.Address = user.Address;
+            vm.City = user.City;
             vm.PhoneNumber = user.PhoneNumber;
             vm.FirstName = user.FirstName;
             vm.LastName = user.LastName;

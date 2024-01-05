@@ -31,6 +31,11 @@ namespace PizzaShop.Models
         [StringLength(60, ErrorMessage = "Adresa je predugacka (maksimalno 60 karaktera)")]
         public string Address { get; set; }
 
+        [Required(ErrorMessage = "Grad je neispravan")]
+        [Display(Name = "Grad")]
+        [StringLength(60, ErrorMessage = "Ime grada je predugacko (maksimalno 60 karaktera)")]
+        public string City { get; set; }
+
         [Required(ErrorMessage = "Uneto ime drzave je neispravno")]
         [Display(Name = "Drzava")]
         [StringLength(50, ErrorMessage = "Ime je predugacko (maksimalno 50 karaktera)")]

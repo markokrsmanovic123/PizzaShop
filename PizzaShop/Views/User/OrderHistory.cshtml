@@ -18,19 +18,32 @@
 
         @foreach (var order in Model.Orders)
         {
-            foreach (var orderDetail in order.OrderDetails)
+            var firstOrderDetail = order.OrderDetails.FirstOrDefault();
+
+            if (firstOrderDetail != null)
             {
                 <tr>
-                    <td>@order.OrderPlaced</td>
-                    <td>@Model.FirstName @Model.LastName</td>
-                    <td>@order.Address, @order.Country</td>
-                    <td>@orderDetail.Pizza.Name</td>
-                    <td>@orderDetail.OrderId</td>
-                    <td>@orderDetail.Amount</td>
-                    <td>@orderDetail.Price</td>
-                    <td>@order.OrderTotal</td>
+                    <td class="align-middle" rowspan="@order.OrderDetails.Count()">@order.OrderPlaced</td>
+                    <td class="align-middle" rowspan="@order.OrderDetails.Count()">@Model.FirstName @Model.LastName</td>
+                    <td class="align-middle" rowspan="@order.OrderDetails.Count()">@order.Address, @order.City, @order.Country</td>
+
+                    <td>@firstOrderDetail.Pizza.Name</td>
+                    <td>@firstOrderDetail.OrderId</td>
+                    <td>@firstOrderDetail.Amount</td>
+                    <td>@firstOrderDetail.Price</td>
+                    <td class="align-middle" rowspan="@order.OrderDetails.Count()">@order.OrderTotal</td>
                 </tr>
+
+                @foreach (var orderDetail in order.OrderDetails.Skip(1))
+                {
+                    <tr>
+                        <td>@orderDetail.Pizza.Name</td>
+                        <td>@orderDetail.OrderId</td>
+                        <td>@orderDetail.Amount</td>
+                        <td>@orderDetail.Price</td>
+                    </tr>
+                }
             }
         }
-    </table>    
+    </table>
 }
