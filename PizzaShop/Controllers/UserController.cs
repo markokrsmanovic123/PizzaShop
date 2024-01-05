@@ -52,7 +52,7 @@ namespace PizzaShop.Controllers
 
             ModelState.AddModelError("", "Neispravni kredencijali");
 
-            return View("Login", user);
+            return View("Login", loginUser);
         }
 
         public IActionResult Register(UserRegisterViewModel userRegisterViewModel)
