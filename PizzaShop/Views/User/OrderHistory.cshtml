@@ -7,10 +7,10 @@
     <table class="table table-light table-bordered mt-3">
         <tr class="table-dark">
             <th>Vreme porudzbine</th>
+            <th>Id porudzbine</th>
             <th>Ime</th>
             <th>Adresa</th>
             <th>Pizza</th>
-            <th>Id porudzbine</th>
             <th>Kolicina</th>
             <th>Cena</th>
             <th>Ukupna cena</th>
@@ -24,21 +24,20 @@
             {
                 <tr>
                     <td class="align-middle" rowspan="@order.OrderDetails.Count()">@order.OrderPlaced</td>
+                    <td>@firstOrderDetail.OrderId</td>
                     <td class="align-middle" rowspan="@order.OrderDetails.Count()">@Model.FirstName @Model.LastName</td>
                     <td class="align-middle" rowspan="@order.OrderDetails.Count()">@order.Address, @order.City, @order.Country</td>
-
                     <td>@firstOrderDetail.Pizza.Name</td>
-                    <td>@firstOrderDetail.OrderId</td>
                     <td>@firstOrderDetail.Amount</td>
-                    <td>@firstOrderDetail.Price</td>
+                    <td>@(firstOrderDetail.Price * @firstOrderDetail.Amount)</td>
                     <td class="align-middle" rowspan="@order.OrderDetails.Count()">@order.OrderTotal</td>
                 </tr>
 
                 @foreach (var orderDetail in order.OrderDetails.Skip(1))
                 {
                     <tr>
-                        <td>@orderDetail.Pizza.Name</td>
                         <td>@orderDetail.OrderId</td>
+                        <td>@orderDetail.Pizza.Name</td>
                         <td>@orderDetail.Amount</td>
                         <td>@orderDetail.Price</td>
                     </tr>

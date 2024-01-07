@@ -133,6 +133,6 @@
 }
 
 .form-check-input:checked {
-  border-color: #a593c2;
-  background-color: #a593c2;
+    border-color: #a593c2;
+    background-color: #a593c2;
 }
