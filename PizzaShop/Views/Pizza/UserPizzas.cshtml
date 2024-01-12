@@ -1,0 +1,27 @@
+﻿@using PizzaShop.ViewModels
+@model PizzaListViewModel
+
+<div class="mt-3">
+    <h3>Ovde se nalaze pizze koje ste vi napravili!</h3>
+    <p>Ukoliko to jos uvek niste uradili, mozete uraditi <a asp-action="CustomPizza" asp-controller="Pizza">ovde.</a></p>
+</div>
+
+<div class="mt-5">
+    <table class="table table-bordered mt-3">
+        <tr style="background-color:#a593c2">
+            <th>Ime pizze</th>
+            <th>Sastojci</th>
+            <th>Cena</th>
+        </tr>
+@{
+    foreach (var pizzas in Model.Pizzas)
+    {
+                <tr style="background-color:#f8f9fa">
+            <td>@pizzas.Name</td>
+            <td>@pizzas.ShortDescription</td>
+            <td>@pizzas.Price</td>
+        </tr>
+    }
+}
+    </table>
+</div>
