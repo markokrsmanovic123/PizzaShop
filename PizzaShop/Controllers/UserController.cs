@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PizzaShop.Helpers;
 using PizzaShop.Models;
@@ -9,10 +10,12 @@ namespace PizzaShop.Controllers
     public class UserController : Controller
     {
         private readonly IUserRepository _userRepository;
+        private readonly INotyfService _notyf;
 
-        public UserController(IUserRepository userRepository)
+        public UserController(IUserRepository userRepository, INotyfService notyf)
         {
             _userRepository = userRepository;
+            _notyf = notyf;
         }
 
         public IActionResult Index()
@@ -46,11 +49,13 @@ namespace PizzaShop.Controllers
                     var serializedUser = JsonConvert.SerializeObject(user);
                     Response.Cookies.Append("User", serializedUser, cookieOptions);
 
+                    _notyf.Custom($"Dobro dosao, {user.Username}!", 10, "#a593c2", "fa fa-check");
+
                     return RedirectToAction("Index", "Home");
                 }
             }
 
-            ModelState.AddModelError("", "Neispravni kredencijali");
+            _notyf.Error("Vasi kredencijali su neispravni!");
 
             return View("Login", loginUser);
         }
@@ -79,11 +84,15 @@ namespace PizzaShop.Controllers
                 if (user == null)
                 {
                     _userRepository.CreateUser(userVM);
+
+                    _notyf.Success("Uspesno ste se registrovali!");
+
                     return View("Sucess");
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Korisnicko ime " + userVM.Username + " je zauzeto");
+                    _notyf.Error($"Korisnicko ime {userVM.Username} je zauzeto!");
+
                     return View("Index", userVM);
                 }
             }
@@ -98,6 +107,8 @@ namespace PizzaShop.Controllers
             {
                 Response.Cookies.Delete("User");
             }
+
+            _notyf.Success("Uspesno ste se izlogovali");
 
             return RedirectToAction("Index", "Home");
         }
@@ -127,18 +138,21 @@ namespace PizzaShop.Controllers
 
             if (model.Username != user.Username)
             {
-                ModelState.AddModelError("", "Korisnicko ime nije ispravno!");
                 return View("Profile", model);
             }
 
             if (user.Password == EncryptionHelper.Encrypt(model.CurrentPassword))
             {
                 _userRepository.UpdatePassword(user, model.NewPassword);
+
+                _notyf.Success("Vasa lozinka je uspesno promenjena!");
+
                 return RedirectToAction("Index", "Home");
             }
             else
             {
-                ModelState.AddModelError("", "Password nije ispravan");
+                _notyf.Error("Lozinka nije ispravna!");
+
                 return View("Profile", model);
             }
         }

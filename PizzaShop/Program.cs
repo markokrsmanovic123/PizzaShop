@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using PizzaShop.Models;
+using AspNetCoreHero.ToastNotification;
+using AspNetCoreHero.ToastNotification.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +16,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddSession();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddNotyf(config => { config.DurationInSeconds = 10; config.IsDismissable = true; config.Position = NotyfPosition.BottomCenter; });
 
 
 var app = builder.Build();
@@ -30,6 +33,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseSession();
 app.UseRouting();
+
+app.UseNotyf();
 
 app.UseAuthorization();
 

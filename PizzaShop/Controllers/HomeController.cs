@@ -8,12 +8,10 @@ namespace PizzaShop.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly IPizzaRepository _pizzaRepository;
 
-        public HomeController(ILogger<HomeController> logger, IPizzaRepository pizzaRepository)
+        public HomeController(IPizzaRepository pizzaRepository)
         {
-            _logger = logger;
             _pizzaRepository = pizzaRepository;
         }
 

@@ -100,5 +100,8 @@
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
     @await RenderSectionAsync("Scripts", required: false)
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await Component.InvokeAsync("Notyf")
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

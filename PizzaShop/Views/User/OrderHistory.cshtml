@@ -29,8 +29,8 @@
                     <td class="align-middle" rowspan="@order.OrderDetails.Count()">@order.Address, @order.City, @order.Country</td>
                     <td>@firstOrderDetail.Pizza.Name</td>
                     <td>@firstOrderDetail.Amount</td>
-                    <td>@(firstOrderDetail.Price * @firstOrderDetail.Amount)</td>
-                    <td class="align-middle" rowspan="@order.OrderDetails.Count()">@order.OrderTotal</td>
+                    <td>@((firstOrderDetail.Price * @firstOrderDetail.Amount).ToString("c"))</td>
+                    <td class="align-middle" rowspan="@order.OrderDetails.Count()">@order.OrderTotal.ToString("c")</td>
                 </tr>
 
                 @foreach (var orderDetail in order.OrderDetails.Skip(1))
@@ -39,7 +39,7 @@
                         <td>@orderDetail.OrderId</td>
                         <td>@orderDetail.Pizza.Name</td>
                         <td>@orderDetail.Amount</td>
-                        <td>@orderDetail.Price</td>
+                        <td>@orderDetail.Price.ToString("c")</td>
                     </tr>
                 }
             }

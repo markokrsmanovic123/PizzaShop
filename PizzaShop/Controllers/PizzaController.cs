@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PizzaShop.Models;
 using PizzaShop.ViewModels;
@@ -12,13 +13,15 @@ namespace PizzaShop.Controllers
         private readonly IPizzaRepository _repository;
         private readonly ICategoryRepository _categoryRepository;
         private readonly IUserRepository _userRepository;
+        private readonly INotyfService _notyf;
 
         public PizzaController(IPizzaRepository repository, ICategoryRepository categoryRepository, 
-            IUserRepository userRepository)
+            IUserRepository userRepository, INotyfService notyf)
         {
             _repository = repository;
             _categoryRepository = categoryRepository;
             _userRepository = userRepository;
+            _notyf = notyf;
         }
 
         public ViewResult List(int? categoryId)
@@ -39,7 +42,16 @@ namespace PizzaShop.Controllers
 
             if (category == "Pizze korisnika")
             {
-                return View("UserPizzas", new PizzaListViewModel(pizzas, category));
+                var userCookie = HttpContext!.Request.Cookies["User"];
+
+                if (userCookie != null)
+                {
+                    var user = JsonConvert.DeserializeObject<User>(userCookie)!;
+                    int userId = user.UserId;
+                    pizzas = _repository.Pizzas.Where(p => p.Category.Id == categoryId && p.UserID == userId).OrderBy(p => p.Name).ToList();
+
+                    return View("UserPizzas", new PizzaListViewModel(pizzas, category));
+                }
             }
 
 
@@ -104,7 +116,7 @@ namespace PizzaShop.Controllers
             {
                 Name = customPizza.PizzaName,
                 Category = _categoryRepository.GetAllCategories().FirstOrDefault(c => c.Name == "Pizze korisnika")!,
-                ShortDescription = string.Join(", ", ingredients),
+                ShortDescription = String.Empty,
                 LongDescription = string.Join(", ", ingredients),
                 Price = 14.99m,
                 IsPizzaOfTheWeek = false,
@@ -115,6 +127,8 @@ namespace PizzaShop.Controllers
             };
 
             _repository.SavePizza(pizza);
+
+            _notyf.Success("Uspesno ste kreirali svoju picu!");
 
             return RedirectToAction("Profile", "User");
         }

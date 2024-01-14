@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PizzaShop.Models;
 using System.Net;
@@ -10,13 +11,15 @@ namespace PizzaShop.Controllers
         private readonly IShoppingCart _shoppingCart;
         private readonly IOrderRepository _orderRepository;
         private readonly IUserRepository _userRepository;
+        private readonly INotyfService _notyf;
 
 
-        public OrderController(IShoppingCart shoppingCart, IOrderRepository orderRepository, IUserRepository userRepository)
+        public OrderController(IShoppingCart shoppingCart, IOrderRepository orderRepository, IUserRepository userRepository, INotyfService notyf)
         {
             _orderRepository = orderRepository;
             _shoppingCart = shoppingCart;
             _userRepository = userRepository;
+            _notyf = notyf;
         }
 
         public IActionResult Checkout()
@@ -59,6 +62,8 @@ namespace PizzaShop.Controllers
             {
                 _orderRepository.CreateOrder(order);
                 _shoppingCart.ClearCart();
+
+                _notyf.Success("Vasa porudzbina je uspesna!");
 
                 return RedirectToAction("CheckoutComplete");
             }
