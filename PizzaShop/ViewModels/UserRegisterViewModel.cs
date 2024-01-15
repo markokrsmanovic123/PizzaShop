@@ -15,7 +15,7 @@ namespace PizzaShop.ViewModels
         [Required(ErrorMessage = "Sifra je obavezna")]
         [Display(Name = "Sifra")]
         [RegularExpression("^(?=(.*[a-z]){1,})(?=(.*[A-Z]){1,})(?=(.*[0-9]){1,})(?=(.*[!@#$%^&*()\\-__+.]){1,}).{8,15}$",
-            ErrorMessage = "Sifra mora imati najmanje 1 veliki karakter, 1 mali karakter, broj, specijalni karakter i da bude duzine od 8-15 karaktera")]
+                            ErrorMessage = "Sifra mora imati najmanje 1 veliki karakter, 1 mali karakter, broj, specijalni karakter i da bude duzine od 8-15 karaktera")]
         [StringLength(20, ErrorMessage = "Sifra je predugacka (maksimalno 20 karaktera)")]
         public string Password { get; set; }
 

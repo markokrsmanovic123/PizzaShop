@@ -15,6 +15,8 @@ namespace PizzaShop.ViewModels
         public string CurrentPassword { get; set; }
 
         [Required]
+        [RegularExpression("^(?=(.*[a-z]){1,})(?=(.*[A-Z]){1,})(?=(.*[0-9]){1,})(?=(.*[!@#$%^&*()\\-__+.]){1,}).{8,15}$",
+                            ErrorMessage = "Nova sifra mora imati najmanje 1 veliki karakter, 1 mali karakter, broj, specijalni karakter i da bude duzine od 8-15 karaktera")]
         [Display(Name = "Nova sifra")]
         public string NewPassword { get; set; }
 
