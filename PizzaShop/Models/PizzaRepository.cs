@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PizzaShop.ViewModels;
 
 namespace PizzaShop.Models
 {
@@ -29,7 +30,20 @@ namespace PizzaShop.Models
             _applicationDbContext.SaveChanges();
         }
 
+        public List<Pizza> GetUsersPizzas(int userId)
+        {
+            return _applicationDbContext.Pizzas.Where(p => p.UserID == userId).ToList();
+        }
 
+        public void DeletePizza(int pizzaId)
+        {
+            _applicationDbContext.Pizzas.Where(p => p.Id == pizzaId).ExecuteDelete();
+        }
 
+        public void UpdatePizza(Pizza pizza)
+        {
+            _applicationDbContext.Pizzas.Update(pizza);
+            _applicationDbContext.SaveChanges();
+        }
     }
 }

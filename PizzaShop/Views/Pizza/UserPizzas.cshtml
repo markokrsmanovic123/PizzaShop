@@ -12,16 +12,17 @@
             <th>Ime pizze</th>
             <th>Sastojci</th>
             <th>Cena</th>
+            <th></th>
         </tr>
-@{
-    foreach (var pizzas in Model.Pizzas)
-    {
-                <tr style="background-color:#f8f9fa">
-            <td>@pizzas.Name</td>
-            <td>@pizzas.ShortDescription</td>
-            <td>@pizzas.Price.ToString("c")</td>
-        </tr>
-    }
-}
+
+        @foreach (var pizza in Model.Pizzas)
+        {
+            <tr class="align-middle"s style="background-color:#f8f9fa">
+                <td>@pizza.Name</td>
+                <td>@pizza.LongDescription</td>
+                <td>@pizza.Price.ToString("c")</td>
+                <td class="text-center"><a class="btn btn-primary" asp-action="AddToShoppingCart" asp-controller="ShoppingCart" asp-route-pizzaId="@pizza.Id">Poruci</a></td>
+            </tr>
+        }
     </table>
 </div>

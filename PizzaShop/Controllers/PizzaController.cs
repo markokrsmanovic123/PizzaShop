@@ -15,7 +15,7 @@ namespace PizzaShop.Controllers
         private readonly IUserRepository _userRepository;
         private readonly INotyfService _notyf;
 
-        public PizzaController(IPizzaRepository repository, ICategoryRepository categoryRepository, 
+        public PizzaController(IPizzaRepository repository, ICategoryRepository categoryRepository,
             IUserRepository userRepository, INotyfService notyf)
         {
             _repository = repository;
@@ -129,6 +129,94 @@ namespace PizzaShop.Controllers
             _repository.SavePizza(pizza);
 
             _notyf.Success("Uspesno ste kreirali svoju picu!");
+
+            return RedirectToAction("Profile", "User");
+        }
+
+        public IActionResult MyPizzas()
+        {
+            var userCookie = Request.Cookies["User"];
+            var user = JsonConvert.DeserializeObject<User>(userCookie!);
+
+            var pizzas = _repository.GetUsersPizzas(user!.UserId);
+
+            return View(pizzas);
+        }
+
+        public IActionResult RemoveUsersPizza(int pizzaId)
+        {
+            if (pizzaId != null)
+            {
+                _repository.DeletePizza(pizzaId);
+            }
+
+            _notyf.Success("Uspesno ste obrisali svoju pizzu");
+
+            return RedirectToAction("Profile", "User");
+        }
+
+        public IActionResult EditUsersPizza(int pizzaId)
+        {
+            var pizza = _repository.GetPizzaById(pizzaId);
+
+            var ingredientsToList = pizza.LongDescription.Split(", ").ToList();
+
+            PizzaUpdateViewModel vm = new PizzaUpdateViewModel()
+            {
+                PizzaName = pizza.Name,
+                PizzaID = pizza.Id
+            };
+
+            var properties = typeof(PizzaUpdateViewModel).GetProperties();
+
+            foreach (var property in properties)
+            {
+                if (property.PropertyType == typeof(bool))
+                {
+                    var displayAttribute = property.GetCustomAttributes(typeof(DisplayAttribute), true).FirstOrDefault() as DisplayAttribute;
+
+                    var nameOfAttr = displayAttribute?.Name;
+
+                    bool isIngredientSelected = ingredientsToList.Contains(nameOfAttr ?? property.Name);
+
+                    property.SetValue(vm, isIngredientSelected);
+                }
+            }
+
+            return View(vm);
+        }
+
+        public IActionResult UpdateUserPizza(PizzaUpdateViewModel pizzaUpdateViewModel)
+        {
+            var pizza = _repository.GetPizzaById(pizzaUpdateViewModel.PizzaID);
+
+            List<string> ingredients = new List<string>();
+
+            var properties = typeof(PizzaUpdateViewModel).GetProperties();
+
+            foreach (var property in properties)
+            {
+                if (property.PropertyType == typeof(bool))
+                {
+                    var value = (bool)property.GetValue(pizzaUpdateViewModel)!;
+
+                    if (value)
+                    {
+                        var displayAttribute = property.GetCustomAttributes(typeof(DisplayAttribute), true).FirstOrDefault() as DisplayAttribute;
+
+                        var nameOfAttr = displayAttribute?.Name;
+
+                        ingredients.Add(nameOfAttr ?? property.Name);
+                    }
+                }
+            }
+
+            pizza.Name = pizzaUpdateViewModel.PizzaName;
+            pizza.LongDescription = string.Join(", ", ingredients);
+
+            _repository.UpdatePizza(pizza);
+
+            _notyf.Success("Uspesno ste izmenili svoju pizzu");
 
             return RedirectToAction("Profile", "User");
         }

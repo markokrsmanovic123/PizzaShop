@@ -2,10 +2,10 @@
 
 namespace PizzaShop.ViewModels
 {
-    public class PizzaCustomViewModel
+    public class PizzaUpdateViewModel
     {
         [Required(ErrorMessage = "Ime pizze je obavezno!")]
-        [Display(Name ="Ime pizze")]
+        [Display(Name = "Ime pizze")]
         [StringLength(20, ErrorMessage = "Ime je predugacko (maksimalno 20 karaktera)")]
         public string PizzaName { get; set; }
 
@@ -17,10 +17,10 @@ namespace PizzaShop.ViewModels
         public bool Sauce { get; set; }
 
         [Display(Name = "Sunka")]
-        public bool Ham {  get; set; }
+        public bool Ham { get; set; }
 
         [Display(Name = "Kobasica")]
-        public bool Pepperoni {  get; set; }
+        public bool Pepperoni { get; set; }
 
         [Display(Name = "Mocarela")]
         public bool Mozzarella { get; set; }
@@ -39,5 +39,7 @@ namespace PizzaShop.ViewModels
 
         [Display(Name = "Feferone")]
         public bool Peppers { get; set; }
+
+        public int PizzaID { get; set; }
     }
 }
