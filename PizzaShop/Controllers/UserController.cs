@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PizzaShop.Helpers;
 using PizzaShop.Models;
+using PizzaShop.TagHelpers;
 using PizzaShop.ViewModels;
 
 namespace PizzaShop.Controllers
@@ -113,15 +114,19 @@ namespace PizzaShop.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [TypeFilter(typeof(UserExceptionFilter))]
         public IActionResult Profile()
         {
             User user = new User();
             var userCookie = HttpContext!.Request.Cookies["User"];
+            
 
             if (userCookie != null)
             {
                 user = JsonConvert.DeserializeObject<User>(userCookie)!;
             }
+
+            //throw new Exception($"Cookie za korisnika {user.Username} nije pronadjen! Ovaj exception je vestacki izazvan.");
 
             var vm = new UpdateUserViewModel()
             {

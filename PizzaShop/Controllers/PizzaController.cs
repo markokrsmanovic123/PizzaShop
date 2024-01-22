@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PizzaShop.Models;
+using PizzaShop.TagHelpers;
 using PizzaShop.ViewModels;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -86,51 +87,54 @@ namespace PizzaShop.Controllers
             return View(vm);
         }
 
+        [TypeFilter(typeof(CustomExceptionFilter))]
         public IActionResult CreateCustomPizza(PizzaCustomViewModel customPizza)
         {
-            List<string> ingredients = new List<string>();
+                List<string> ingredients = new List<string>();
 
-            var properties = typeof(PizzaCustomViewModel).GetProperties();
+                var properties = typeof(PizzaCustomViewModel).GetProperties();
 
-            foreach (var property in properties)
-            {
-                if (property.PropertyType == typeof(bool))
+                foreach (var property in properties)
                 {
-                    var value = (bool)property.GetValue(customPizza)!;
-
-                    if (value)
+                    if (property.PropertyType == typeof(bool))
                     {
-                        var displayAttribute = property.GetCustomAttributes(typeof(DisplayAttribute), true).FirstOrDefault() as DisplayAttribute;
+                        var value = (bool)property.GetValue(customPizza)!;
 
-                        var nameOfAttr = displayAttribute?.Name;
+                        if (value)
+                        {
+                            var displayAttribute = property.GetCustomAttributes(typeof(DisplayAttribute), true).FirstOrDefault() as DisplayAttribute;
 
-                        ingredients.Add(nameOfAttr ?? property.Name);
+                            var nameOfAttr = displayAttribute?.Name;
+
+                            ingredients.Add(nameOfAttr ?? property.Name);
+                        }
                     }
                 }
-            }
 
-            var userCookie = Request.Cookies["User"];
-            var user = JsonConvert.DeserializeObject<User>(userCookie!);
+                var userCookie = Request.Cookies["User"];
+                var user = JsonConvert.DeserializeObject<User>(userCookie!);
 
-            var pizza = new Pizza()
-            {
-                Name = customPizza.PizzaName,
-                Category = _categoryRepository.GetAllCategories().FirstOrDefault(c => c.Name == "Pizze korisnika")!,
-                ShortDescription = String.Empty,
-                LongDescription = string.Join(", ", ingredients),
-                Price = 14.99m,
-                IsPizzaOfTheWeek = false,
-                InStock = true,
-                ImageThumbnailUrl = String.Empty,
-                ImageUrl = String.Empty,
-                UserID = user!.UserId
-            };
+                throw new InvalidOperationException("Neka greska");
 
-            _repository.SavePizza(pizza);
+                var pizza = new Pizza()
+                {
+                    Name = customPizza.PizzaName,
+                    Category = _categoryRepository.GetAllCategories().FirstOrDefault(c => c.Name == "Pizze korisnika")!,
+                    ShortDescription = String.Empty,
+                    LongDescription = string.Join(", ", ingredients),
+                    Price = 14.99m,
+                    IsPizzaOfTheWeek = false,
+                    InStock = true,
+                    ImageThumbnailUrl = String.Empty,
+                    ImageUrl = String.Empty,
+                    UserID = user!.UserId
+                };
 
-            _notyf.Success("Uspesno ste kreirali svoju picu!");
+                _repository.SavePizza(pizza);
 
-            return RedirectToAction("Profile", "User");
+                _notyf.Success("Uspesno ste kreirali svoju picu!");
+
+                return RedirectToAction("MyPizzas", "Pizza");
         }
 
         public IActionResult MyPizzas()
@@ -152,7 +156,7 @@ namespace PizzaShop.Controllers
 
             _notyf.Success("Uspesno ste obrisali svoju pizzu");
 
-            return RedirectToAction("Profile", "User");
+            return RedirectToAction("MyPizzas", "Pizza");
         }
 
         public IActionResult EditUsersPizza(int pizzaId)
@@ -218,7 +222,7 @@ namespace PizzaShop.Controllers
 
             _notyf.Success("Uspesno ste izmenili svoju pizzu");
 
-            return RedirectToAction("Profile", "User");
+            return RedirectToAction("MyPizzas", "Pizza");
         }
     }
 }

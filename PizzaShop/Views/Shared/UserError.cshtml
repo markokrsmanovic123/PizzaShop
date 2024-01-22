@@ -1,0 +1,10 @@
+﻿<div class="mt-5">
+    <h2>OOOPS! Doslo je do greske :(</h2>
+    <p class="mt-5">Molim vas, kontaktirajte podrsku</p>
+
+    @{
+        var p = (Exception)ViewData["Caused by"];
+    }
+
+    <p>@p.Message</p>
+</div>

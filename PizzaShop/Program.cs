@@ -29,6 +29,8 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseExceptionHandler("/Home/Error");
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseSession();
