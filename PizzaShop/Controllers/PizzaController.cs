@@ -114,7 +114,7 @@ namespace PizzaShop.Controllers
                 var userCookie = Request.Cookies["User"];
                 var user = JsonConvert.DeserializeObject<User>(userCookie!);
 
-                throw new InvalidOperationException("Neka greska");
+                //throw new InvalidOperationException("Neka greska");
 
                 var pizza = new Pizza()
                 {

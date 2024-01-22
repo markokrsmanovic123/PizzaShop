@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using PizzaShop.Models;
 using AspNetCoreHero.ToastNotification;
 using AspNetCoreHero.ToastNotification.Extensions;
+using PizzaShop.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,7 +40,7 @@ app.UseRouting();
 app.UseNotyf();
 
 app.UseAuthorization();
-
+app.UseMiddleware<Middleware>();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

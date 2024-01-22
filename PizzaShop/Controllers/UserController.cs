@@ -104,7 +104,7 @@ namespace PizzaShop.Controllers
         }
         public IActionResult Logout()
         {
-            if (Request.Cookies["User"] != null)
+            if (HttpContext!.User!.Identity!.IsAuthenticated)
             {
                 Response.Cookies.Delete("User");
             }
@@ -118,11 +118,10 @@ namespace PizzaShop.Controllers
         public IActionResult Profile()
         {
             User user = new User();
-            var userCookie = HttpContext!.Request.Cookies["User"];
-            
 
-            if (userCookie != null)
+            if (HttpContext.User.Identity.IsAuthenticated)
             {
+                var userCookie = HttpContext!.Request.Cookies["User"];
                 user = JsonConvert.DeserializeObject<User>(userCookie)!;
             }
 

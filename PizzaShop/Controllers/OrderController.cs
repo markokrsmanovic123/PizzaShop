@@ -35,7 +35,7 @@ namespace PizzaShop.Controllers
 
             var vm = new Order();
 
-            vm.UserId = user.UserId;
+            vm.UserId = user!.UserId;
             vm.Address = user.Address;
             vm.City = user.City;
             vm.PhoneNumber = user.PhoneNumber;

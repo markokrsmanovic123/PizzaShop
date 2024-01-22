@@ -21,12 +21,8 @@
 </head>
 
 @{
-    var user = new User();
-    var userCookie = HttpContextAccessor.HttpContext!.Request.Cookies["User"];
-    if (userCookie != null)
-    {
-        user = JsonConvert.DeserializeObject<User>(userCookie!);
-    }
+    var isLoggedIn = HttpContextAccessor!.HttpContext!.User.Identity.IsAuthenticated;
+    var username = HttpContextAccessor.HttpContext.User.Identity.Name;
 }
 
 <body>
@@ -67,9 +63,9 @@
                     </ul>
                     <ul class="nav navbar-nav ms-auto">
                         <li class="nav-item d-flex flex-column flex-md-row">
-                            @if (!string.IsNullOrEmpty(user!.Username))
+                            @if (isLoggedIn)
                             {
-                                <a class="btn btn-outline-light me-2 log-in-btn" asp-controller="User" asp-action="Profile">@user.Username</a>
+                                <a class="btn btn-outline-light me-2 log-in-btn" asp-controller="User" asp-action="Profile">@username</a>
                                 <a class="btn btn-outline-light mt-3 mt-md-0 me-2" asp-controller="User" asp-action="Logout">Izloguj se</a>
                             }
                             else
