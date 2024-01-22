@@ -6,7 +6,7 @@ namespace PizzaShop.TagHelpers
 {
     public class CustomExceptionFilter : IExceptionFilter
     {
-        private IModelMetadataProvider _metadataProvider;
+        private readonly IModelMetadataProvider _metadataProvider;
         public CustomExceptionFilter(IModelMetadataProvider modelMetadataProvider) 
         {
             _metadataProvider = modelMetadataProvider;

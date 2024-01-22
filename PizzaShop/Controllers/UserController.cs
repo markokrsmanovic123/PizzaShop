@@ -125,7 +125,7 @@ namespace PizzaShop.Controllers
                 user = JsonConvert.DeserializeObject<User>(userCookie)!;
             }
 
-            //throw new Exception($"Cookie za korisnika {user.Username} nije pronadjen! Ovaj exception je vestacki izazvan.");
+            throw new Exception($"Cookie za korisnika {user.Username} nije pronadjen! Ovaj exception je vestacki izazvan.");
 
             var vm = new UpdateUserViewModel()
             {

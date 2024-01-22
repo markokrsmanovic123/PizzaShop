@@ -6,7 +6,7 @@ namespace PizzaShop.TagHelpers
 {
     public class UserExceptionFilter : IExceptionFilter
     {
-        private IModelMetadataProvider _metadataProvider;
+        private readonly IModelMetadataProvider _metadataProvider;
 
         public UserExceptionFilter (IModelMetadataProvider metadataProvider)
         {
@@ -14,6 +14,8 @@ namespace PizzaShop.TagHelpers
         }
         public void OnException(ExceptionContext context)
         {
+            LogExceptionToFile(context.Exception);
+
             var result = new ViewResult { ViewName = "UserError" };
 
             result.ViewData = new Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary(_metadataProvider, context.ModelState);
@@ -23,5 +25,19 @@ namespace PizzaShop.TagHelpers
             context.ExceptionHandled = true;
             context.Result = result;
         }
+
+        private void LogExceptionToFile(Exception exception)
+        {
+            string? logPath = "C:\\Users\\krsma\\source\\repos\\PizzaShop\\PizzaShop\\wwwroot\\errorlog.txt";
+
+            using (StreamWriter writer = new StreamWriter(logPath, true))
+            {
+                writer.WriteLine("-------------------------------------------------------------");
+                writer.WriteLine($"{DateTime.Now} {exception.GetType().FullName}: {exception.Message}");
+                writer.WriteLine($"StackTrace: {exception.StackTrace}");
+                writer.WriteLine();
+            }
+        }
+
     }
 }
